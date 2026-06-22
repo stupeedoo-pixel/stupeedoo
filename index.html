@@ -3,149 +3,230 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Will You Be My Valentine? 🎀</title>
+  <title>Will u be my valentine 🎀</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Dancing+Script:wght@600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --rose:    #c2547a;
+      --blush:   #f2a7c3;
+      --cream:   #fff5f8;
+      --petal:   #fde0eb;
+      --dusty:   #e8a0b8;
+      --deep:    #9b3060;
+      --lace:    #fce8f0;
     }
 
     body {
       min-height: 100vh;
-      background: #ffe4f0;
+      background: var(--cream);
       background-image:
-        radial-gradient(circle at 20% 20%, #ffb3d1 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, #ffc8e0 0%, transparent 40%),
-        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ff9ec4' fill-opacity='0.18'%3E%3Cpath d='M30 10 C24 4 14 4 14 14 C14 24 30 36 30 36 C30 36 46 24 46 14 C46 4 36 4 30 10Z'/%3E%3C/g%3E%3C/svg%3E");
+        radial-gradient(ellipse at 15% 10%, #ffd6e7 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 85%, #f9c0d8 0%, transparent 45%),
+        url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f2a7c3' fill-opacity='0.12'%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3Ccircle cx='40' cy='10' r='2'/%3E%3Ccircle cx='70' cy='10' r='2'/%3E%3Ccircle cx='25' cy='30' r='2'/%3E%3Ccircle cx='55' cy='30' r='2'/%3E%3Ccircle cx='10' cy='50' r='2'/%3E%3Ccircle cx='40' cy='50' r='2'/%3E%3Ccircle cx='70' cy='50' r='2'/%3E%3Ccircle cx='25' cy='70' r='2'/%3E%3Ccircle cx='55' cy='70' r='2'/%3E%3C/g%3E%3C/svg%3E");
       font-family: 'Nunito', sans-serif;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding: 24px;
       overflow: hidden;
     }
 
-    .card {
-      background: white;
-      border-radius: 32px;
-      padding: 48px 52px;
-      text-align: center;
-      box-shadow:
-        0 8px 32px rgba(255, 120, 170, 0.18),
-        0 2px 8px rgba(255, 120, 170, 0.12);
-      max-width: 480px;
-      width: 90%;
-      border: 3px solid #ffb3d1;
-      position: relative;
+    /* floating decorative bows */
+    .deco-bow {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.18;
+      animation: floatDeco linear infinite;
     }
 
-    /* Hello Kitty SVG face */
-    .kitty {
-      width: 140px;
-      height: 140px;
-      margin: 0 auto 20px;
-      display: block;
+    @keyframes floatDeco {
+      0%   { transform: translateY(0)   rotate(0deg); }
+      50%  { transform: translateY(-18px) rotate(6deg); }
+      100% { transform: translateY(0)   rotate(0deg); }
+    }
+
+    /* lace strip top & bottom */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      left: 0; right: 0;
+      height: 18px;
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='18' viewBox='0 0 40 18' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 Q10 18 20 0 Q30 18 40 0' fill='none' stroke='%23e8a0b8' stroke-width='1.8'/%3E%3Ccircle cx='0'  cy='0' r='2' fill='%23e8a0b8'/%3E%3Ccircle cx='20' cy='0' r='2' fill='%23e8a0b8'/%3E%3Ccircle cx='40' cy='0' r='2' fill='%23e8a0b8'/%3E%3C/svg%3E");
+      background-repeat: repeat-x;
+      z-index: 50;
+    }
+    body::before { top: 0; }
+    body::after  { bottom: 0; transform: scaleY(-1); }
+
+    /* ── CARD ── */
+    .card {
+      background: white;
+      border-radius: 36px;
+      padding: 52px 56px 48px;
+      text-align: center;
+      max-width: 460px;
+      width: 100%;
+      position: relative;
+      box-shadow:
+        0 2px 0 var(--dusty),
+        0 6px 30px rgba(194, 84, 122, 0.14),
+        0 1px 4px rgba(194, 84, 122, 0.08);
+      border: 2px solid var(--petal);
+    }
+
+    /* lace border around card */
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 30px;
+      border: 1.5px dashed var(--dusty);
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    /* top ribbon stripe */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 60px; height: 4px;
+      background: linear-gradient(90deg, var(--blush), var(--rose), var(--blush));
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* big bow on top of card */
+    .card-bow {
+      position: absolute;
+      top: -38px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Hello Kitty */
+    .kitty { width: 128px; height: 128px; margin: 8px auto 18px; display: block; }
+
+    /* tag line above title */
+    .tag {
+      font-family: 'Dancing Script', cursive;
+      color: var(--blush);
+      font-size: 1rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
     }
 
     h1 {
-      color: #e75480;
-      font-size: 2rem;
-      font-weight: 900;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--rose);
+      font-size: 1.85rem;
+      line-height: 1.25;
       margin-bottom: 8px;
-      line-height: 1.2;
     }
 
     .subtitle {
-      color: #ff85a1;
-      font-size: 1rem;
+      font-family: 'Dancing Script', cursive;
+      color: var(--dusty);
+      font-size: 1.05rem;
       margin-bottom: 36px;
     }
 
     .buttons {
       display: flex;
-      gap: 16px;
+      gap: 14px;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
     }
 
     .btn-yes {
-      background: linear-gradient(135deg, #ff6fa8, #ff3d7f);
+      background: linear-gradient(135deg, #e8759e, var(--rose));
       color: white;
       border: none;
       border-radius: 50px;
-      padding: 14px 36px;
-      font-size: 1.1rem;
-      font-weight: 900;
-      font-family: 'Nunito', sans-serif;
+      padding: 13px 34px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
       cursor: pointer;
-      box-shadow: 0 4px 16px rgba(255, 61, 127, 0.35);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, font-size 0.3s ease, padding 0.3s ease;
+      box-shadow: 0 4px 14px rgba(194, 84, 122, 0.32), 0 1px 0 #9b3060;
+      transition: transform 0.15s, box-shadow 0.15s, font-size 0.3s ease, padding 0.3s ease;
       position: relative;
       z-index: 2;
       white-space: nowrap;
+      letter-spacing: 0.02em;
     }
-
-    .btn-yes:hover {
-      transform: scale(1.06);
-      box-shadow: 0 6px 22px rgba(255, 61, 127, 0.45);
-    }
-
-    .btn-yes:active {
-      transform: scale(0.97);
-    }
+    .btn-yes:hover { transform: scale(1.06) translateY(-1px); box-shadow: 0 7px 22px rgba(194,84,122,0.38), 0 1px 0 #9b3060; }
+    .btn-yes:active { transform: scale(0.97); }
 
     .btn-no {
       background: white;
-      color: #e75480;
-      border: 2.5px solid #ffb3d1;
+      color: var(--dusty);
+      border: 1.5px solid var(--petal);
       border-radius: 50px;
-      padding: 13px 32px;
-      font-size: 1rem;
+      padding: 12px 28px;
+      font-size: 0.9rem;
       font-weight: 700;
       font-family: 'Nunito', sans-serif;
       cursor: pointer;
-      transition: background 0.15s ease, transform 0.1s ease;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
+      letter-spacing: 0.01em;
     }
+    .btn-no:hover { background: var(--lace); color: var(--rose); transform: scale(0.97); }
 
-    .btn-no:hover {
-      background: #fff0f5;
+    /* corner roses */
+    .corner {
+      position: absolute;
+      font-size: 1.15rem;
+      opacity: 0.55;
+      line-height: 1;
     }
+    .corner.tl { top: 18px;  left: 20px; }
+    .corner.tr { top: 18px;  right: 20px; }
+    .corner.bl { bottom: 18px; left: 20px; }
+    .corner.br { bottom: 18px; right: 20px; }
 
-    /* YES fills screen overlay */
+    /* ── CELEBRATION ── */
     .fullscreen-yes {
       position: fixed;
       inset: 0;
-      background: linear-gradient(135deg, #ff6fa8, #ff3d7f);
+      background: linear-gradient(160deg, #f9d0e2 0%, #f2a7c3 40%, #d96890 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 999;
-      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
+      padding: 24px;
     }
 
+    .fullscreen-yes .cel-bow { margin-bottom: 10px; }
+
     .fullscreen-yes .big-kitty {
-      width: 200px;
-      height: 200px;
-      margin-bottom: 28px;
-      animation: bounce 0.8s ease infinite alternate;
+      width: 180px; height: 180px;
+      margin-bottom: 24px;
+      animation: bobble 1s ease-in-out infinite alternate;
     }
 
     .fullscreen-yes h2 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
       color: white;
-      font-size: clamp(2rem, 6vw, 4rem);
-      font-weight: 900;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.15);
-      margin-bottom: 12px;
+      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      text-shadow: 0 2px 16px rgba(155, 48, 96, 0.25);
+      margin-bottom: 10px;
     }
 
     .fullscreen-yes p {
-      color: rgba(255,255,255,0.9);
-      font-size: clamp(1rem, 3vw, 1.5rem);
-      font-weight: 700;
+      font-family: 'Dancing Script', cursive;
+      color: rgba(255,255,255,0.92);
+      font-size: clamp(1.1rem, 3.5vw, 1.7rem);
     }
 
     .hearts-rain {
@@ -155,27 +236,21 @@
       overflow: hidden;
       z-index: 1000;
     }
-
     .heart-drop {
       position: absolute;
       top: -60px;
-      font-size: 1.8rem;
       animation: fall linear forwards;
-      opacity: 0.85;
     }
-
     @keyframes fall {
-      to { transform: translateY(110vh) rotate(30deg); opacity: 0; }
+      to { transform: translateY(115vh) rotate(25deg); opacity: 0; }
     }
-
     @keyframes popIn {
-      from { transform: scale(0.5); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
+      from { transform: scale(0.4) rotate(-4deg); opacity: 0; }
+      to   { transform: scale(1)   rotate(0deg);  opacity: 1; }
     }
-
-    @keyframes bounce {
-      from { transform: translateY(0); }
-      to   { transform: translateY(-14px); }
+    @keyframes bobble {
+      from { transform: translateY(0)    rotate(-2deg); }
+      to   { transform: translateY(-12px) rotate(2deg); }
     }
 
     .hidden { display: none !important; }
@@ -183,78 +258,104 @@
 </head>
 <body>
 
+  <!-- floating bg bows -->
+  <svg class="deco-bow" style="width:90px;top:8%;left:4%;animation-duration:6s;" viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg"><path d="M40,20 L10,4 L14,20 L10,36Z" fill="#e8759e"/><path d="M40,20 L70,4 L66,20 L70,36Z" fill="#e8759e"/><circle cx="40" cy="20" r="7" fill="#c2547a"/></svg>
+  <svg class="deco-bow" style="width:60px;top:12%;right:6%;animation-duration:8s;animation-delay:-3s;" viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg"><path d="M40,20 L10,4 L14,20 L10,36Z" fill="#f2a7c3"/><path d="M40,20 L70,4 L66,20 L70,36Z" fill="#f2a7c3"/><circle cx="40" cy="20" r="7" fill="#e8759e"/></svg>
+  <svg class="deco-bow" style="width:70px;bottom:14%;left:7%;animation-duration:7s;animation-delay:-1s;" viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg"><path d="M40,20 L10,4 L14,20 L10,36Z" fill="#c2547a"/><path d="M40,20 L70,4 L66,20 L70,36Z" fill="#c2547a"/><circle cx="40" cy="20" r="7" fill="#9b3060"/></svg>
+  <svg class="deco-bow" style="width:55px;bottom:10%;right:5%;animation-duration:9s;animation-delay:-4s;" viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg"><path d="M40,20 L10,4 L14,20 L10,36Z" fill="#f2a7c3"/><path d="M40,20 L70,4 L66,20 L70,36Z" fill="#f2a7c3"/><circle cx="40" cy="20" r="7" fill="#e8759e"/></svg>
+
   <div class="card" id="card">
-    <!-- Hello Kitty face SVG -->
+    <!-- big bow on top -->
+    <svg class="card-bow" width="96" height="52" viewBox="0 0 96 52" xmlns="http://www.w3.org/2000/svg">
+      <path d="M48,26 L8,6  L13,26 L8,46Z"  fill="#e8759e"/>
+      <path d="M48,26 L88,6 L83,26 L88,46Z" fill="#e8759e"/>
+      <ellipse cx="48" cy="26" rx="10" ry="9" fill="#c2547a"/>
+      <ellipse cx="48" cy="26" rx="5"  ry="4" fill="#f2a7c3"/>
+    </svg>
+
+    <!-- corner roses -->
+    <span class="corner tl">🌸</span>
+    <span class="corner tr">🌸</span>
+    <span class="corner bl">🍒</span>
+    <span class="corner br">🍒</span>
+
+    <!-- Hello Kitty -->
     <svg class="kitty" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <!-- Ears -->
-      <ellipse cx="60" cy="48" rx="26" ry="28" fill="white" stroke="#ffb3d1" stroke-width="3"/>
-      <ellipse cx="140" cy="48" rx="26" ry="28" fill="white" stroke="#ffb3d1" stroke-width="3"/>
-      <!-- Inner ear -->
-      <ellipse cx="60" cy="52" rx="13" ry="15" fill="#ffcce0"/>
-      <ellipse cx="140" cy="52" rx="13" ry="15" fill="#ffcce0"/>
-      <!-- Head -->
-      <ellipse cx="100" cy="115" rx="76" ry="72" fill="white" stroke="#ffb3d1" stroke-width="3"/>
-      <!-- Eyes -->
+      <ellipse cx="60" cy="48" rx="26" ry="28" fill="white" stroke="#f2a7c3" stroke-width="2.5"/>
+      <ellipse cx="140" cy="48" rx="26" ry="28" fill="white" stroke="#f2a7c3" stroke-width="2.5"/>
+      <ellipse cx="60" cy="52" rx="13" ry="15" fill="#fde0eb"/>
+      <ellipse cx="140" cy="52" rx="13" ry="15" fill="#fde0eb"/>
+      <ellipse cx="100" cy="115" rx="76" ry="72" fill="white" stroke="#f2a7c3" stroke-width="2.5"/>
       <ellipse cx="78" cy="108" rx="8" ry="9" fill="#2d2d2d"/>
       <ellipse cx="122" cy="108" rx="8" ry="9" fill="#2d2d2d"/>
-      <!-- Eye shine -->
       <circle cx="82" cy="104" r="3" fill="white"/>
       <circle cx="126" cy="104" r="3" fill="white"/>
-      <!-- Nose -->
-      <ellipse cx="100" cy="122" rx="5" ry="3.5" fill="#ff9ec4"/>
-      <!-- Whiskers left -->
-      <line x1="25" y1="118" x2="88" y2="122" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
-      <line x1="25" y1="128" x2="88" y2="126" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
-      <line x1="25" y1="138" x2="88" y2="130" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
-      <!-- Whiskers right -->
-      <line x1="175" y1="118" x2="112" y2="122" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
-      <line x1="175" y1="128" x2="112" y2="126" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
-      <line x1="175" y1="138" x2="112" y2="130" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
-      <!-- Bow -->
-      <g transform="translate(126, 72)">
-        <path d="M0,0 L18,-10 L22,0 L18,10 Z" fill="#ff3d7f"/>
-        <path d="M0,0 L-18,-10 L-22,0 L-18,10 Z" fill="#ff3d7f"/>
-        <circle cx="0" cy="0" r="7" fill="#ff6fa8"/>
+      <ellipse cx="100" cy="122" rx="5" ry="3.5" fill="#e8759e"/>
+      <ellipse cx="72" cy="134" rx="13" ry="7" fill="#fde0eb" opacity="0.7"/>
+      <ellipse cx="128" cy="134" rx="13" ry="7" fill="#fde0eb" opacity="0.7"/>
+      <line x1="22" y1="116" x2="88" y2="121" stroke="#ddd" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="22" y1="126" x2="88" y2="125" stroke="#ddd" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="22" y1="136" x2="88" y2="129" stroke="#ddd" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="178" y1="116" x2="112" y2="121" stroke="#ddd" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="178" y1="126" x2="112" y2="125" stroke="#ddd" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="178" y1="136" x2="112" y2="129" stroke="#ddd" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- big elaborate bow -->
+      <g transform="translate(130, 66)">
+        <path d="M0,0 L22,-13 L26,0 L22,13Z" fill="#c2547a"/>
+        <path d="M0,0 L-22,-13 L-26,0 L-22,13Z" fill="#c2547a"/>
+        <ellipse cx="0" cy="0" rx="9" ry="8" fill="#e8759e"/>
+        <ellipse cx="0" cy="0" rx="4" ry="3.5" fill="#fde0eb"/>
       </g>
     </svg>
 
-    <h1>Will you be my Valentine? 💕</h1>
-    <p class="subtitle">pretty please with strawberries on top 🍓</p>
+    <p class="tag">♡ a little note for you ♡</p>
+    <h1>Will u be my valentine 💕</h1>
+    <p class="subtitle">pretty please, with a cherry on top 🍒</p>
 
     <div class="buttons">
-      <button class="btn-yes" id="btnYes" onclick="sayYes()">Yes! 💖</button>
-      <button class="btn-no"  id="btnNo"  onclick="sayNo()">No 😿</button>
+      <button class="btn-yes" id="btnYes" onclick="sayYes()">Yes, of course 💖</button>
+      <button class="btn-no"  id="btnNo"  onclick="sayNo()">no…</button>
     </div>
   </div>
 
-  <!-- Full-screen YES celebration -->
+  <!-- Celebration -->
   <div class="fullscreen-yes hidden" id="celebration">
     <div class="hearts-rain" id="heartsRain"></div>
+
+    <svg class="cel-bow" width="120" height="64" viewBox="0 0 96 52" xmlns="http://www.w3.org/2000/svg">
+      <path d="M48,26 L8,6  L13,26 L8,46Z"  fill="white" opacity="0.85"/>
+      <path d="M48,26 L88,6 L83,26 L88,46Z" fill="white" opacity="0.85"/>
+      <ellipse cx="48" cy="26" rx="10" ry="9" fill="#fde0eb"/>
+      <ellipse cx="48" cy="26" rx="5"  ry="4" fill="white"/>
+    </svg>
+
+    <!-- Happy Kitty -->
     <svg class="big-kitty" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="60" cy="48" rx="26" ry="28" fill="white" stroke="#ffecf4" stroke-width="3"/>
-      <ellipse cx="140" cy="48" rx="26" ry="28" fill="white" stroke="#ffecf4" stroke-width="3"/>
-      <ellipse cx="60" cy="52" rx="13" ry="15" fill="#ffcce0"/>
-      <ellipse cx="140" cy="52" rx="13" ry="15" fill="#ffcce0"/>
-      <ellipse cx="100" cy="115" rx="76" ry="72" fill="white" stroke="#ffecf4" stroke-width="3"/>
-      <!-- Happy curved eyes -->
-      <path d="M70,108 Q78,100 86,108" stroke="#2d2d2d" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-      <path d="M114,108 Q122,100 130,108" stroke="#2d2d2d" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-      <ellipse cx="100" cy="122" rx="5" ry="3.5" fill="#ff9ec4"/>
-      <!-- Blush cheeks -->
-      <ellipse cx="68" cy="132" rx="14" ry="8" fill="#ffb3d1" opacity="0.5"/>
-      <ellipse cx="132" cy="132" rx="14" ry="8" fill="#ffb3d1" opacity="0.5"/>
-      <line x1="25" y1="118" x2="88" y2="122" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
-      <line x1="25" y1="128" x2="88" y2="126" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
-      <line x1="175" y1="118" x2="112" y2="122" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
-      <line x1="175" y1="128" x2="112" y2="126" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
-      <g transform="translate(126, 72)">
-        <path d="M0,0 L18,-10 L22,0 L18,10 Z" fill="white" opacity="0.9"/>
-        <path d="M0,0 L-18,-10 L-22,0 L-18,10 Z" fill="white" opacity="0.9"/>
-        <circle cx="0" cy="0" r="7" fill="#ffcce0"/>
+      <ellipse cx="60" cy="48" rx="26" ry="28" fill="white" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <ellipse cx="140" cy="48" rx="26" ry="28" fill="white" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <ellipse cx="60" cy="52" rx="13" ry="15" fill="#fde0eb"/>
+      <ellipse cx="140" cy="52" rx="13" ry="15" fill="#fde0eb"/>
+      <ellipse cx="100" cy="115" rx="76" ry="72" fill="white" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <!-- happy curved eyes -->
+      <path d="M69,110 Q78,100 87,110" stroke="#2d2d2d" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M113,110 Q122,100 131,110" stroke="#2d2d2d" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="100" cy="123" rx="5" ry="3.5" fill="#e8759e"/>
+      <ellipse cx="72"  cy="136" rx="14" ry="8" fill="#fde0eb" opacity="0.65"/>
+      <ellipse cx="128" cy="136" rx="14" ry="8" fill="#fde0eb" opacity="0.65"/>
+      <line x1="22" y1="116" x2="88" y2="121" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="22" y1="126" x2="88" y2="125" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="178" y1="116" x2="112" y2="121" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="178" y1="126" x2="112" y2="125" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+      <g transform="translate(130, 66)">
+        <path d="M0,0 L22,-13 L26,0 L22,13Z" fill="white" opacity="0.9"/>
+        <path d="M0,0 L-22,-13 L-26,0 L-22,13Z" fill="white" opacity="0.9"/>
+        <ellipse cx="0" cy="0" rx="9" ry="8" fill="#fde0eb"/>
+        <ellipse cx="0" cy="0" rx="4" ry="3.5" fill="white"/>
       </g>
     </svg>
-    <h2>Yay!! 🎉💖</h2>
-    <p>She said YES! You're my Valentine! 🌸</p>
+
+    <h2>yay!! she said yes 🎀</h2>
+    <p>you're my dearest valentine, forever & always ♡</p>
   </div>
 
   <script>
@@ -263,65 +364,59 @@
     const btnNo  = document.getElementById('btnNo');
 
     const noPhrases = [
-      'No 😿', 'Are you sure? 🥺', 'Really?? 😢', 'Please?? 🙏',
-      'Last chance! 💔', 'Noooo 😭', 'Think again!! 🌸', 'PLEASE 🥺🥺'
+      'no…', 'are you sure? 🥺', 'please reconsider 🌸',
+      'but i made u a bow 🎀', 'this is breaking my heart 💔',
+      'kitty is crying rn 😿', 'PLEASE 🥺🥺🥺', 'ur literally my everything'
     ];
 
     function sayNo() {
       noCount++;
-
-      // Update No button label
       btnNo.textContent = noPhrases[Math.min(noCount, noPhrases.length - 1)];
 
-      // Grow the Yes button
-      const scale = 1 + noCount * 0.35;
-      const basePad = 14 + noCount * 8;
-      const sidePad = 36 + noCount * 18;
-      const fontSize = 1.1 + noCount * 0.22;
+      const fontSize = 1 + noCount * 0.28;
+      const padV     = 13 + noCount * 7;
+      const padH     = 34 + noCount * 16;
 
-      btnYes.style.fontSize   = fontSize + 'rem';
-      btnYes.style.padding    = basePad + 'px ' + sidePad + 'px';
-      btnYes.style.borderRadius = '50px';
+      btnYes.style.fontSize    = fontSize + 'rem';
+      btnYes.style.padding     = padV + 'px ' + padH + 'px';
 
-      // After enough clicks, Yes fills the whole screen
       if (noCount >= 8) {
-        btnYes.style.position  = 'fixed';
-        btnYes.style.inset     = '0';
-        btnYes.style.width     = '100vw';
-        btnYes.style.height    = '100vh';
-        btnYes.style.fontSize  = '4rem';
+        btnYes.style.position     = 'fixed';
+        btnYes.style.inset        = '0';
+        btnYes.style.width        = '100vw';
+        btnYes.style.height       = '100vh';
+        btnYes.style.fontSize     = '3.5rem';
         btnYes.style.borderRadius = '0';
-        btnYes.style.zIndex    = '100';
-        btnYes.style.padding   = '0';
-        btnYes.textContent     = 'YES 💖 (you have no choice)';
-        btnNo.style.display    = 'none';
+        btnYes.style.zIndex       = '100';
+        btnYes.style.padding      = '0';
+        btnYes.style.fontStyle    = 'italic';
+        btnYes.textContent        = 'Yes, of course 💖 (u had no choice, darling)';
+        btnNo.style.display       = 'none';
       }
     }
 
     function sayYes() {
       document.getElementById('card').classList.add('hidden');
-      const cel = document.getElementById('celebration');
-      cel.classList.remove('hidden');
-      spawnHearts();
+      document.getElementById('celebration').classList.remove('hidden');
+      spawnDrops();
     }
 
-    function spawnHearts() {
+    function spawnDrops() {
       const container = document.getElementById('heartsRain');
-      const emojis = ['💖', '💗', '💕', '💓', '🌸', '🎀', '✨', '🍓'];
-      for (let i = 0; i < 40; i++) {
-        const h = document.createElement('span');
-        h.className = 'heart-drop';
-        h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        h.style.left     = Math.random() * 100 + 'vw';
-        h.style.fontSize = (1.2 + Math.random() * 1.8) + 'rem';
-        const dur = 2.5 + Math.random() * 3;
-        h.style.animationDuration = dur + 's';
-        h.style.animationDelay   = (Math.random() * 2) + 's';
-        container.appendChild(h);
-        setTimeout(() => h.remove(), (dur + 2) * 1000);
+      const items = ['💖','🎀','🌸','🍒','💕','✨','🪷','💗','🎀','🌷'];
+      for (let i = 0; i < 45; i++) {
+        const el = document.createElement('span');
+        el.className = 'heart-drop';
+        el.textContent = items[Math.floor(Math.random() * items.length)];
+        el.style.left        = Math.random() * 100 + 'vw';
+        el.style.fontSize    = (1 + Math.random() * 2) + 'rem';
+        const dur = 2.8 + Math.random() * 3.2;
+        el.style.animationDuration = dur + 's';
+        el.style.animationDelay   = (Math.random() * 2.5) + 's';
+        container.appendChild(el);
+        setTimeout(() => el.remove(), (dur + 3) * 1000);
       }
-      // Keep spawning
-      setTimeout(spawnHearts, 3000);
+      setTimeout(spawnDrops, 3200);
     }
   </script>
 </body>
