@@ -199,26 +199,13 @@
       opacity: 0.4;
     }
 
-    /* ── ELEMENT 1: LINE — black & white, graphic lines ── */
+    /* ── ELEMENT 1: LINE — sage green, window leading lines ── */
     #line {
-      background: #f5f5f0;
-      color: #111;
+      background: #e8ece6;
+      color: #1c2618;
     }
-    #line .image-side {
-      background: #111;
-    }
-    #line .divider { background: #111; }
-    #line .image-side::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: repeating-linear-gradient(
-        0deg, transparent, transparent 38px, rgba(255,255,255,0.07) 38px, rgba(255,255,255,0.07) 40px
-      ), repeating-linear-gradient(
-        90deg, transparent, transparent 38px, rgba(255,255,255,0.07) 38px, rgba(255,255,255,0.07) 40px
-      );
-      pointer-events: none;
-    }
+    #line .image-side { background: #2d3d28; }
+    #line .divider { background: #4a6741; }
 
     /* ── ELEMENT 2: SHAPE — bold coral/orange geometric ── */
     #shape { background: #ff5c35; color: white; }
@@ -234,59 +221,23 @@
       pointer-events: none;
     }
 
-    /* ── ELEMENT 3: FORM — deep blue 3D depth ── */
+    /* ── ELEMENT 3: FORM — teal/blue, bonsai against blue wall ── */
     #form {
-      background: #0d1b2a;
-      color: white;
+      background: #1a3a3a;
+      color: #e8f4f0;
     }
-    #form .image-side {
-      background: linear-gradient(135deg, #0d1b2a 0%, #1b4f72 50%, #0d1b2a 100%);
-    }
-    #form .divider { background: #4fc3f7; }
-    #form .element-title { color: #e0f4ff; }
-    #form .image-side::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 60% 40%, rgba(79,195,247,0.15) 0%, transparent 60%);
-      pointer-events: none;
-    }
+    #form .image-side { background: #0d2626; }
+    #form .divider { background: #6db8a8; }
+    #form .element-title { color: #c8ebe3; }
 
-    /* ── ELEMENT 4: SPACE — cosmic dark purple ── */
+    /* ── ELEMENT 4: SPACE — misty gray-blue, ocean horizon ── */
     #space {
-      background: #0b0014;
-      color: white;
+      background: #d8dfe6;
+      color: #1e2a35;
     }
-    #space .image-side {
-      background: #0b0014;
-    }
-    #space .divider { background: #c084fc; }
-    #space .element-title { color: #e9d5ff; }
-    #space .image-side::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 30% 50%, rgba(192,132,252,0.18) 0%, transparent 55%),
-        radial-gradient(ellipse at 70% 30%, rgba(96,165,250,0.1) 0%, transparent 45%);
-      pointer-events: none;
-    }
-    /* star dots */
-    #space .image-side::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
-        radial-gradient(1px 1px at 40% 60%, rgba(255,255,255,0.5) 0%, transparent 100%),
-        radial-gradient(1px 1px at 65% 15%, rgba(255,255,255,0.7) 0%, transparent 100%),
-        radial-gradient(1px 1px at 80% 75%, rgba(255,255,255,0.4) 0%, transparent 100%),
-        radial-gradient(1px 1px at 25% 85%, rgba(255,255,255,0.5) 0%, transparent 100%),
-        radial-gradient(1px 1px at 55% 45%, rgba(255,255,255,0.6) 0%, transparent 100%),
-        radial-gradient(1px 1px at 90% 35%, rgba(255,255,255,0.4) 0%, transparent 100%),
-        radial-gradient(1px 1px at 10% 55%, rgba(255,255,255,0.5) 0%, transparent 100%);
-      pointer-events: none;
-    }
+    #space .image-side { background: #b0bec8; }
+    #space .divider { background: #5b7a8f; }
+    #space .element-title { color: #1e2a35; }
 
     /* ── ELEMENT 5: COLOR — vibrant rainbow gradient ── */
     #color {
@@ -305,36 +256,23 @@
       pointer-events: none;
     }
 
-    /* ── ELEMENT 6: VALUE — elegant grayscale ── */
+    /* ── ELEMENT 6: VALUE — dark moody navy, rainy street ── */
     #value {
-      background: linear-gradient(to right, #1a1a1a 0%, #f0f0f0 100%);
-      color: white;
+      background: #0e1520;
+      color: #d0d8e4;
     }
-    #value .image-side {
-      background: linear-gradient(160deg, #000 0%, #555 50%, #ccc 100%);
-    }
-    #value .divider { background: rgba(255,255,255,0.5); }
-    #value .text-side { background: rgba(0,0,0,0.15); }
+    #value .image-side { background: #060c14; }
+    #value .divider { background: #5a7090; }
+    #value .element-title { color: #c8d8ea; }
 
-    /* ── ELEMENT 7: TEXTURE — warm earthy ── */
+    /* ── ELEMENT 7: TEXTURE — stone gray, B&W pebbles ── */
     #texture {
-      background: #2d1b0e;
-      color: #f5e6d3;
+      background: #3a3a3a;
+      color: #f0f0ee;
     }
-    #texture .image-side {
-      background: #1a0f07;
-    }
-    #texture .divider { background: #d4a574; }
-    #texture .element-title { color: #f5e6d3; }
-    #texture .image-side::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
-      background-size: 200px;
-      opacity: 0.6;
-      pointer-events: none;
-    }
+    #texture .image-side { background: #1e1e1e; }
+    #texture .divider { background: #aaa; }
+    #texture .element-title { color: #f0f0ee; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
@@ -375,18 +313,7 @@
   <!-- 1. LINE -->
   <section class="element" id="line">
     <div class="image-side">
-      <!--
-        SWAP YOUR IMAGE:
-        Replace the placeholder div below with:
-        <img src="your-line-image.jpg" alt="Line" />
-      -->
-      <div class="placeholder">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4" y="4" width="40" height="40" rx="4" stroke="white" stroke-width="2"/>
-          <line x1="12" y1="36" x2="36" y2="12" stroke="white" stroke-width="2"/>
-        </svg>
-        your image here
-      </div>
+      <img src="img-line.jpeg" alt="Line — window sill leading lines" />
     </div>
     <div class="text-side">
       <span class="element-number">01 / 07</span>
@@ -423,13 +350,7 @@
   <!-- 3. FORM -->
   <section class="element" id="form">
     <div class="image-side">
-      <div class="placeholder">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="24" cy="24" rx="18" ry="18" stroke="white" stroke-width="2"/>
-          <ellipse cx="24" cy="24" rx="18" ry="7" stroke="white" stroke-width="2" opacity="0.5"/>
-        </svg>
-        your image here
-      </div>
+      <img src="img-form.jpeg" alt="Form — bonsai tree sculpture" />
     </div>
     <div class="text-side">
       <span class="element-number">03 / 07</span>
@@ -445,14 +366,7 @@
   <!-- 4. SPACE -->
   <section class="element" id="space">
     <div class="image-side">
-      <div class="placeholder">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="24" r="3" fill="white"/>
-          <circle cx="24" cy="24" r="10" stroke="white" stroke-width="1.5" opacity="0.5"/>
-          <circle cx="24" cy="24" r="18" stroke="white" stroke-width="1" opacity="0.25"/>
-        </svg>
-        your image here
-      </div>
+      <img src="img-space.jpeg" alt="Space — ocean horizon with distant ship" />
     </div>
     <div class="text-side">
       <span class="element-number">04 / 07</span>
@@ -491,18 +405,7 @@
   <!-- 6. VALUE -->
   <section class="element" id="value">
     <div class="image-side">
-      <div class="placeholder">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="vg" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="black"/>
-              <stop offset="100%" stop-color="white"/>
-            </linearGradient>
-          </defs>
-          <rect x="6" y="16" width="36" height="16" rx="3" fill="url(%23vg)" stroke="white" stroke-width="1.5" opacity="0.5"/>
-        </svg>
-        your image here
-      </div>
+      <img src="img-value.jpeg" alt="Value — rainy street with puddle reflection" />
     </div>
     <div class="text-side">
       <span class="element-number">06 / 07</span>
@@ -518,14 +421,7 @@
   <!-- 7. TEXTURE -->
   <section class="element" id="texture">
     <div class="image-side">
-      <div class="placeholder">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 16 Q12 10 18 16 Q24 22 30 16 Q36 10 42 16" stroke="white" stroke-width="1.5" fill="none"/>
-          <path d="M6 24 Q12 18 18 24 Q24 30 30 24 Q36 18 42 24" stroke="white" stroke-width="1.5" fill="none"/>
-          <path d="M6 32 Q12 26 18 32 Q24 38 30 32 Q36 26 42 32" stroke="white" stroke-width="1.5" fill="none"/>
-        </svg>
-        your image here
-      </div>
+      <img src="img-texture.jpeg" alt="Texture — black and white pebbles" />
     </div>
     <div class="text-side">
       <span class="element-number">07 / 07</span>
