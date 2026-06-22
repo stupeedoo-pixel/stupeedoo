@@ -207,19 +207,10 @@
     #line .image-side { background: #2d3d28; }
     #line .divider { background: #4a6741; }
 
-    /* ── ELEMENT 2: SHAPE — bold coral/orange geometric ── */
-    #shape { background: #ff5c35; color: white; }
-    #shape .image-side { background: #c43a1f; }
-    #shape .divider { background: white; }
-    #shape .image-side::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 25% 25%, rgba(255,255,255,0.08) 0%, transparent 50%),
-        radial-gradient(circle at 75% 75%, rgba(0,0,0,0.15) 0%, transparent 50%);
-      pointer-events: none;
-    }
+    /* ── ELEMENT 2: SHAPE — cool slate, B&W pebble shapes ── */
+    #shape { background: #e8e8e6; color: #1a1a1a; }
+    #shape .image-side { background: #2a2a2a; }
+    #shape .divider { background: #555; }
 
     /* ── ELEMENT 3: FORM — teal/blue, bonsai against blue wall ── */
     #form {
@@ -239,22 +230,14 @@
     #space .divider { background: #5b7a8f; }
     #space .element-title { color: #1e2a35; }
 
-    /* ── ELEMENT 5: COLOR — vibrant rainbow gradient ── */
+    /* ── ELEMENT 5: COLOR — deep forest green, hibiscus coral ── */
     #color {
-      background: #fff;
-      color: #111;
+      background: #0e2018;
+      color: #f0ebe0;
     }
-    #color .image-side {
-      background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #c77dff);
-    }
-    #color .divider { background: #ff6b6b; }
-    #color .image-side::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.15) 0%, transparent 70%);
-      pointer-events: none;
-    }
+    #color .image-side { background: #061209; }
+    #color .divider { background: #e8705a; }
+    #color .element-title { color: #fce8d8; }
 
     /* ── ELEMENT 6: VALUE — dark moody navy, rainy street ── */
     #value {
@@ -265,14 +248,14 @@
     #value .divider { background: #5a7090; }
     #value .element-title { color: #c8d8ea; }
 
-    /* ── ELEMENT 7: TEXTURE — stone gray, B&W pebbles ── */
+    /* ── ELEMENT 7: TEXTURE — dark asphalt, wet pavement ── */
     #texture {
-      background: #3a3a3a;
-      color: #f0f0ee;
+      background: #1c1e22;
+      color: #c8cdd4;
     }
-    #texture .image-side { background: #1e1e1e; }
-    #texture .divider { background: #aaa; }
-    #texture .element-title { color: #f0f0ee; }
+    #texture .image-side { background: #0c0e10; }
+    #texture .divider { background: #6a7a8a; }
+    #texture .element-title { color: #d8dde4; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
@@ -329,12 +312,7 @@
   <!-- 2. SHAPE -->
   <section class="element" id="shape">
     <div class="image-side">
-      <div class="placeholder">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="24,6 44,42 4,42" stroke="white" stroke-width="2"/>
-        </svg>
-        your image here
-      </div>
+      <img src="img-shape.jpeg" alt="Shape — black and white pebbles" />
     </div>
     <div class="text-side">
       <span class="element-number">02 / 07</span>
@@ -382,14 +360,7 @@
   <!-- 5. COLOR -->
   <section class="element" id="color">
     <div class="image-side">
-      <div class="placeholder" style="color: #111; opacity: 0.5;">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="18" cy="20" r="12" fill="#ff6b6b" opacity="0.7"/>
-          <circle cx="30" cy="20" r="12" fill="#4d96ff" opacity="0.7"/>
-          <circle cx="24" cy="30" r="12" fill="#ffd93d" opacity="0.7"/>
-        </svg>
-        your image here
-      </div>
+      <img src="img-color.jpeg" alt="Color — hibiscus flower" />
     </div>
     <div class="text-side">
       <span class="element-number">05 / 07</span>
