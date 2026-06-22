@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7 Elements of Art</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV DOTS ── */
+    .nav-dots {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .nav-dots a {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      border: 1.5px solid rgba(255,255,255,0.7);
+      display: block;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .nav-dots a:hover,
+    .nav-dots a.active { background: white; transform: scale(1.4); }
+
+    /* ── HERO ── */
+    #hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0a0a0a;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 60%, #1a1a2e 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 40%, #16213e 0%, transparent 60%);
+    }
+    .hero-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 20px;
+      position: relative;
+    }
+    #hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      color: white;
+      line-height: 1;
+      position: relative;
+      letter-spacing: -0.01em;
+    }
+    #hero h1 em {
+      font-style: italic;
+      color: rgba(255,255,255,0.55);
+    }
+    .hero-sub {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.12em;
+      margin-top: 24px;
+      position: relative;
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.25);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent);
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.2; transform: scaleY(1); }
+      50%       { opacity: 0.7; transform: scaleY(1.2); }
+    }
+
+    /* ── ELEMENT SECTIONS ── */
+    .element {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .element:nth-child(even) .image-side  { order: 2; }
+    .element:nth-child(even) .text-side   { order: 1; }
+
+    .image-side {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* image placeholder — swap src to your own image */
+    .image-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .image-side:hover img { transform: scale(1.03); }
+
+    /* placeholder shown when no image is set */
+    .placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      opacity: 0.35;
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: white;
+    }
+    .placeholder svg { width: 44px; height: 44px; opacity: 0.6; }
+
+    .text-side {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 72px 64px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .element-number {
+      font-size: 0.68rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      opacity: 0.5;
+    }
+
+    .element-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      line-height: 1;
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+    }
+
+    .element-desc {
+      font-size: 0.92rem;
+      line-height: 1.8;
+      max-width: 380px;
+      opacity: 0.72;
+      font-weight: 300;
+    }
+
+    .divider {
+      width: 40px;
+      height: 1.5px;
+      margin: 24px 0;
+      opacity: 0.4;
+    }
+
+    /* ── ELEMENT 1: LINE — sage green, window leading lines ── */
+    #line {
+      background: #e8ece6;
+      color: #1c2618;
+    }
+    #line .image-side { background: #2d3d28; }
+    #line .divider { background: #4a6741; }
+
+    /* ── ELEMENT 2: SHAPE — cool slate, B&W pebble shapes ── */
+    #shape { background: #e8e8e6; color: #1a1a1a; }
+    #shape .image-side { background: #2a2a2a; }
+    #shape .divider { background: #555; }
+
+    /* ── ELEMENT 3: FORM — teal/blue, bonsai against blue wall ── */
+    #form {
+      background: #1a3a3a;
+      color: #e8f4f0;
+    }
+    #form .image-side { background: #0d2626; }
+    #form .divider { background: #6db8a8; }
+    #form .element-title { color: #c8ebe3; }
+
+    /* ── ELEMENT 4: SPACE — misty gray-blue, ocean horizon ── */
+    #space {
+      background: #d8dfe6;
+      color: #1e2a35;
+    }
+    #space .image-side { background: #b0bec8; }
+    #space .divider { background: #5b7a8f; }
+    #space .element-title { color: #1e2a35; }
+
+    /* ── ELEMENT 5: COLOR — deep forest green, hibiscus coral ── */
+    #color {
+      background: #0e2018;
+      color: #f0ebe0;
+    }
+    #color .image-side { background: #061209; }
+    #color .divider { background: #e8705a; }
+    #color .element-title { color: #fce8d8; }
+
+    /* ── ELEMENT 6: VALUE — dark moody navy, rainy street ── */
+    #value {
+      background: #0e1520;
+      color: #d0d8e4;
+    }
+    #value .image-side { background: #060c14; }
+    #value .divider { background: #5a7090; }
+    #value .element-title { color: #c8d8ea; }
+
+    /* ── ELEMENT 7: TEXTURE — dark asphalt, wet pavement ── */
+    #texture {
+      background: #1c1e22;
+      color: #c8cdd4;
+    }
+    #texture .image-side { background: #0c0e10; }
+    #texture .divider { background: #6a7a8a; }
+    #texture .element-title { color: #d8dde4; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .element {
+        grid-template-columns: 1fr;
+        grid-template-rows: 55vw 1fr;
+      }
+      .element:nth-child(even) .image-side,
+      .element:nth-child(even) .text-side { order: unset; }
+      .image-side { min-height: 55vw; }
+      .text-side  { padding: 48px 32px; }
+      .nav-dots   { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav dots -->
+  <nav class="nav-dots" aria-label="Jump to section">
+    <a href="#hero"    title="Intro"></a>
+    <a href="#line"    title="Line"></a>
+    <a href="#shape"   title="Shape"></a>
+    <a href="#form"    title="Form"></a>
+    <a href="#space"   title="Space"></a>
+    <a href="#color"   title="Color"></a>
+    <a href="#value"   title="Value"></a>
+    <a href="#texture" title="Texture"></a>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <p class="hero-label">A visual study</p>
+    <h1>7 Elements<br/><em>of Art</em></h1>
+    <p class="hero-sub">Line · Shape · Form · Space · Color · Value · Texture</p>
+    <div class="scroll-hint">scroll</div>
+  </section>
+
+  <!-- 1. LINE -->
+  <section class="element" id="line">
+    <div class="image-side">
+      <img src="img-line.jpeg" alt="Line — window sill leading lines" />
+    </div>
+    <div class="text-side">
+      <span class="element-number">01 / 07</span>
+      <h2 class="element-title">Line</h2>
+      <div class="divider"></div>
+      <p class="element-desc">
+        The path of a moving point. Lines define edges, suggest movement,
+        and guide the eye — they are the most fundamental mark an artist can make.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2. SHAPE -->
+  <section class="element" id="shape">
+    <div class="image-side">
+      <img src="img-shape.jpeg" alt="Shape — black and white pebbles" />
+    </div>
+    <div class="text-side">
+      <span class="element-number">02 / 07</span>
+      <h2 class="element-title">Shape</h2>
+      <div class="divider"></div>
+      <p class="element-desc">
+        A two-dimensional area defined by edges or a change in value and color.
+        Shapes are either geometric — precise and mathematical — or organic, free and natural.
+      </p>
+    </div>
+  </section>
+
+  <!-- 3. FORM -->
+  <section class="element" id="form">
+    <div class="image-side">
+      <img src="img-form.jpeg" alt="Form — bonsai tree sculpture" />
+    </div>
+    <div class="text-side">
+      <span class="element-number">03 / 07</span>
+      <h2 class="element-title">Form</h2>
+      <div class="divider"></div>
+      <p class="element-desc">
+        Shape given volume and depth — three-dimensional, or the illusion of it.
+        Light and shadow transform a flat shape into a form with mass and presence.
+      </p>
+    </div>
+  </section>
+
+  <!-- 4. SPACE -->
+  <section class="element" id="space">
+    <div class="image-side">
+      <img src="img-space.jpeg" alt="Space — ocean horizon with distant ship" />
+    </div>
+    <div class="text-side">
+      <span class="element-number">04 / 07</span>
+      <h2 class="element-title">Space</h2>
+      <div class="divider"></div>
+      <p class="element-desc">
+        The area around, between, within, and beyond objects. Positive space
+        is occupied; negative space breathes. Together they create balance, tension, and depth.
+      </p>
+    </div>
+  </section>
+
+  <!-- 5. COLOR -->
+  <section class="element" id="color">
+    <div class="image-side">
+      <img src="img-color.jpeg" alt="Color — hibiscus flower" />
+    </div>
+    <div class="text-side">
+      <span class="element-number">05 / 07</span>
+      <h2 class="element-title">Color</h2>
+      <div class="divider"></div>
+      <p class="element-desc">
+        Light reflected off surfaces, described by hue, value, and saturation.
+        Color evokes emotion, sets mood, and creates harmony — or deliberate tension.
+      </p>
+    </div>
+  </section>
+
+  <!-- 6. VALUE -->
+  <section class="element" id="value">
+    <div class="image-side">
+      <img src="img-value.jpeg" alt="Value — rainy street with puddle reflection" />
+    </div>
+    <div class="text-side">
+      <span class="element-number">06 / 07</span>
+      <h2 class="element-title">Value</h2>
+      <div class="divider"></div>
+      <p class="element-desc">
+        The lightness or darkness of a color. Value creates contrast, reveals form,
+        and determines the overall mood — from stark drama to subtle whisper.
+      </p>
+    </div>
+  </section>
+
+  <!-- 7. TEXTURE -->
+  <section class="element" id="texture">
+    <div class="image-side">
+      <img src="img-texture.jpeg" alt="Texture — black and white pebbles" />
+    </div>
+    <div class="text-side">
+      <span class="element-number">07 / 07</span>
+      <h2 class="element-title">Texture</h2>
+      <div class="divider"></div>
+      <p class="element-desc">
+        The surface quality of an object — rough, smooth, soft, coarse.
+        In art, texture can be tactile (real) or visual (implied through technique).
+      </p>
+    </div>
+  </section>
+
+  <script>
+    // Highlight active nav dot based on scroll position
+    const sections = ['hero','line','shape','form','space','color','value','texture'];
+    const dots = document.querySelectorAll('.nav-dots a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          dots.forEach(d => d.classList.remove('active'));
+          const idx = sections.indexOf(entry.target.id);
+          if (idx !== -1) dots[idx]?.classList.add('active');
+        }
+      });
+    }, { threshold: 0.5 });
+
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  </script>
+</body>
+</html>
