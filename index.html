@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will You Be My Valentine? 🎀</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #ffe4f0;
+      background-image:
+        radial-gradient(circle at 20% 20%, #ffb3d1 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, #ffc8e0 0%, transparent 40%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ff9ec4' fill-opacity='0.18'%3E%3Cpath d='M30 10 C24 4 14 4 14 14 C14 24 30 36 30 36 C30 36 46 24 46 14 C46 4 36 4 30 10Z'/%3E%3C/g%3E%3C/svg%3E");
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      border-radius: 32px;
+      padding: 48px 52px;
+      text-align: center;
+      box-shadow:
+        0 8px 32px rgba(255, 120, 170, 0.18),
+        0 2px 8px rgba(255, 120, 170, 0.12);
+      max-width: 480px;
+      width: 90%;
+      border: 3px solid #ffb3d1;
+      position: relative;
+    }
+
+    /* Hello Kitty SVG face */
+    .kitty {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 20px;
+      display: block;
+    }
+
+    h1 {
+      color: #e75480;
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      color: #ff85a1;
+      font-size: 1rem;
+      margin-bottom: 36px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #ff6fa8, #ff3d7f);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 14px 36px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(255, 61, 127, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, font-size 0.3s ease, padding 0.3s ease;
+      position: relative;
+      z-index: 2;
+      white-space: nowrap;
+    }
+
+    .btn-yes:hover {
+      transform: scale(1.06);
+      box-shadow: 0 6px 22px rgba(255, 61, 127, 0.45);
+    }
+
+    .btn-yes:active {
+      transform: scale(0.97);
+    }
+
+    .btn-no {
+      background: white;
+      color: #e75480;
+      border: 2.5px solid #ffb3d1;
+      border-radius: 50px;
+      padding: 13px 32px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-no:hover {
+      background: #fff0f5;
+    }
+
+    /* YES fills screen overlay */
+    .fullscreen-yes {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #ff6fa8, #ff3d7f);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .fullscreen-yes .big-kitty {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 28px;
+      animation: bounce 0.8s ease infinite alternate;
+    }
+
+    .fullscreen-yes h2 {
+      color: white;
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 900;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      margin-bottom: 12px;
+    }
+
+    .fullscreen-yes p {
+      color: rgba(255,255,255,0.9);
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      font-weight: 700;
+    }
+
+    .hearts-rain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .heart-drop {
+      position: absolute;
+      top: -60px;
+      font-size: 1.8rem;
+      animation: fall linear forwards;
+      opacity: 0.85;
+    }
+
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(30deg); opacity: 0; }
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-14px); }
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="card">
+    <!-- Hello Kitty face SVG -->
+    <svg class="kitty" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Ears -->
+      <ellipse cx="60" cy="48" rx="26" ry="28" fill="white" stroke="#ffb3d1" stroke-width="3"/>
+      <ellipse cx="140" cy="48" rx="26" ry="28" fill="white" stroke="#ffb3d1" stroke-width="3"/>
+      <!-- Inner ear -->
+      <ellipse cx="60" cy="52" rx="13" ry="15" fill="#ffcce0"/>
+      <ellipse cx="140" cy="52" rx="13" ry="15" fill="#ffcce0"/>
+      <!-- Head -->
+      <ellipse cx="100" cy="115" rx="76" ry="72" fill="white" stroke="#ffb3d1" stroke-width="3"/>
+      <!-- Eyes -->
+      <ellipse cx="78" cy="108" rx="8" ry="9" fill="#2d2d2d"/>
+      <ellipse cx="122" cy="108" rx="8" ry="9" fill="#2d2d2d"/>
+      <!-- Eye shine -->
+      <circle cx="82" cy="104" r="3" fill="white"/>
+      <circle cx="126" cy="104" r="3" fill="white"/>
+      <!-- Nose -->
+      <ellipse cx="100" cy="122" rx="5" ry="3.5" fill="#ff9ec4"/>
+      <!-- Whiskers left -->
+      <line x1="25" y1="118" x2="88" y2="122" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
+      <line x1="25" y1="128" x2="88" y2="126" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
+      <line x1="25" y1="138" x2="88" y2="130" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
+      <!-- Whiskers right -->
+      <line x1="175" y1="118" x2="112" y2="122" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
+      <line x1="175" y1="128" x2="112" y2="126" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
+      <line x1="175" y1="138" x2="112" y2="130" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
+      <!-- Bow -->
+      <g transform="translate(126, 72)">
+        <path d="M0,0 L18,-10 L22,0 L18,10 Z" fill="#ff3d7f"/>
+        <path d="M0,0 L-18,-10 L-22,0 L-18,10 Z" fill="#ff3d7f"/>
+        <circle cx="0" cy="0" r="7" fill="#ff6fa8"/>
+      </g>
+    </svg>
+
+    <h1>Will you be my Valentine? 💕</h1>
+    <p class="subtitle">pretty please with strawberries on top 🍓</p>
+
+    <div class="buttons">
+      <button class="btn-yes" id="btnYes" onclick="sayYes()">Yes! 💖</button>
+      <button class="btn-no"  id="btnNo"  onclick="sayNo()">No 😿</button>
+    </div>
+  </div>
+
+  <!-- Full-screen YES celebration -->
+  <div class="fullscreen-yes hidden" id="celebration">
+    <div class="hearts-rain" id="heartsRain"></div>
+    <svg class="big-kitty" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="60" cy="48" rx="26" ry="28" fill="white" stroke="#ffecf4" stroke-width="3"/>
+      <ellipse cx="140" cy="48" rx="26" ry="28" fill="white" stroke="#ffecf4" stroke-width="3"/>
+      <ellipse cx="60" cy="52" rx="13" ry="15" fill="#ffcce0"/>
+      <ellipse cx="140" cy="52" rx="13" ry="15" fill="#ffcce0"/>
+      <ellipse cx="100" cy="115" rx="76" ry="72" fill="white" stroke="#ffecf4" stroke-width="3"/>
+      <!-- Happy curved eyes -->
+      <path d="M70,108 Q78,100 86,108" stroke="#2d2d2d" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M114,108 Q122,100 130,108" stroke="#2d2d2d" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="100" cy="122" rx="5" ry="3.5" fill="#ff9ec4"/>
+      <!-- Blush cheeks -->
+      <ellipse cx="68" cy="132" rx="14" ry="8" fill="#ffb3d1" opacity="0.5"/>
+      <ellipse cx="132" cy="132" rx="14" ry="8" fill="#ffb3d1" opacity="0.5"/>
+      <line x1="25" y1="118" x2="88" y2="122" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+      <line x1="25" y1="128" x2="88" y2="126" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+      <line x1="175" y1="118" x2="112" y2="122" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+      <line x1="175" y1="128" x2="112" y2="126" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+      <g transform="translate(126, 72)">
+        <path d="M0,0 L18,-10 L22,0 L18,10 Z" fill="white" opacity="0.9"/>
+        <path d="M0,0 L-18,-10 L-22,0 L-18,10 Z" fill="white" opacity="0.9"/>
+        <circle cx="0" cy="0" r="7" fill="#ffcce0"/>
+      </g>
+    </svg>
+    <h2>Yay!! 🎉💖</h2>
+    <p>She said YES! You're my Valentine! 🌸</p>
+  </div>
+
+  <script>
+    let noCount = 0;
+    const btnYes = document.getElementById('btnYes');
+    const btnNo  = document.getElementById('btnNo');
+
+    const noPhrases = [
+      'No 😿', 'Are you sure? 🥺', 'Really?? 😢', 'Please?? 🙏',
+      'Last chance! 💔', 'Noooo 😭', 'Think again!! 🌸', 'PLEASE 🥺🥺'
+    ];
+
+    function sayNo() {
+      noCount++;
+
+      // Update No button label
+      btnNo.textContent = noPhrases[Math.min(noCount, noPhrases.length - 1)];
+
+      // Grow the Yes button
+      const scale = 1 + noCount * 0.35;
+      const basePad = 14 + noCount * 8;
+      const sidePad = 36 + noCount * 18;
+      const fontSize = 1.1 + noCount * 0.22;
+
+      btnYes.style.fontSize   = fontSize + 'rem';
+      btnYes.style.padding    = basePad + 'px ' + sidePad + 'px';
+      btnYes.style.borderRadius = '50px';
+
+      // After enough clicks, Yes fills the whole screen
+      if (noCount >= 8) {
+        btnYes.style.position  = 'fixed';
+        btnYes.style.inset     = '0';
+        btnYes.style.width     = '100vw';
+        btnYes.style.height    = '100vh';
+        btnYes.style.fontSize  = '4rem';
+        btnYes.style.borderRadius = '0';
+        btnYes.style.zIndex    = '100';
+        btnYes.style.padding   = '0';
+        btnYes.textContent     = 'YES 💖 (you have no choice)';
+        btnNo.style.display    = 'none';
+      }
+    }
+
+    function sayYes() {
+      document.getElementById('card').classList.add('hidden');
+      const cel = document.getElementById('celebration');
+      cel.classList.remove('hidden');
+      spawnHearts();
+    }
+
+    function spawnHearts() {
+      const container = document.getElementById('heartsRain');
+      const emojis = ['💖', '💗', '💕', '💓', '🌸', '🎀', '✨', '🍓'];
+      for (let i = 0; i < 40; i++) {
+        const h = document.createElement('span');
+        h.className = 'heart-drop';
+        h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        h.style.left     = Math.random() * 100 + 'vw';
+        h.style.fontSize = (1.2 + Math.random() * 1.8) + 'rem';
+        const dur = 2.5 + Math.random() * 3;
+        h.style.animationDuration = dur + 's';
+        h.style.animationDelay   = (Math.random() * 2) + 's';
+        container.appendChild(h);
+        setTimeout(() => h.remove(), (dur + 2) * 1000);
+      }
+      // Keep spawning
+      setTimeout(spawnHearts, 3000);
+    }
+  </script>
+</body>
+</html>
