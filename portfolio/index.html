@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stupeedoo — Portfolio</title>
+  <meta name="description" content="Personal portfolio — web development projects, front-end work, and things I've built." />
+
+  <!--
+    ─────────────────────────────────────────────────────────────
+    THINGS TO EDIT (search for "EDIT:" to find each one)
+      1. Your name          — hero + nav wordmark + footer
+      2. Your one-liner     — hero subtitle
+      3. About paragraphs   — the About section
+      4. Projects           — the three <article class="project"> blocks
+      5. Toolkit chips      — the skills you actually use
+      6. Contact links      — email / GitHub / anything else
+    ─────────────────────────────────────────────────────────────
+  -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:      #0b0c0e;
+      --bg-2:    #111316;
+      --line:    #23262b;
+      --text:    #e7e9ec;
+      --muted:   #9aa1ab;
+      --faint:   #5f666f;
+      --accent:  #6db8a8;
+      --accent-2:#c8ebe3;
+      --max:     1080px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 300;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 28px; }
+
+    .mono {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 20px 28px;
+      max-width: var(--max);
+      margin: 0 auto;
+      transition: padding 0.3s ease;
+    }
+    nav.scrolled { padding: 12px 28px; }
+
+    .nav-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 74px;
+      z-index: 99;
+      background: rgba(11, 12, 14, 0.72);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      opacity: 0;
+      transition: opacity 0.3s ease, border-color 0.3s ease;
+      pointer-events: none;
+    }
+    .nav-bg.scrolled { opacity: 1; border-bottom-color: var(--line); }
+
+    .wordmark {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    .wordmark span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.25s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.25s ease;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { width: 100%; }
+
+    @media (max-width: 620px) {
+      .nav-links { gap: 18px; }
+      .nav-links a { font-size: 0.75rem; }
+      .nav-links .hide-sm { display: none; }
+    }
+
+    /* ── HERO ────────────────────────────────────────── */
+    header#hero {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header#hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 20% 30%, rgba(109,184,168,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 85% 75%, rgba(90,112,144,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    /* faint grid */
+    header#hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 0%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 0%, transparent 75%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; padding: 120px 0 90px; }
+
+    .hero-label { margin-bottom: 26px; }
+
+    /* EDIT: your name */
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3.2rem, 11vw, 7.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent-2);
+    }
+
+    /* EDIT: your one-liner */
+    .hero-role {
+      font-size: clamp(1rem, 2.4vw, 1.3rem);
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 46ch;
+      margin-bottom: 40px;
+    }
+    .hero-role strong { color: var(--text); font-weight: 500; }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 26px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      border: 1px solid var(--line);
+      transition: border-color 0.25s, background 0.25s, transform 0.25s, color 0.25s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #05100d;
+      font-weight: 500;
+    }
+    .btn-primary:hover { background: var(--accent-2); border-color: var(--accent-2); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 34px; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: var(--faint);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+    .scroll-hint .bar {
+      width: 1px; height: 46px;
+      background: linear-gradient(to bottom, var(--faint), transparent);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+    /* ── SECTIONS ────────────────────────────────────── */
+    section { padding: 110px 0; border-top: 1px solid var(--line); }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: 52px;
+      flex-wrap: wrap;
+    }
+    .section-head h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.1rem, 5vw, 3.2rem);
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
+
+    /* ── ABOUT ───────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 60px;
+    }
+    .about-copy p { color: var(--muted); margin-bottom: 20px; max-width: 62ch; }
+    .about-copy p:last-child { margin-bottom: 0; }
+    .about-copy strong { color: var(--text); font-weight: 500; }
+
+    .facts { border-left: 1px solid var(--line); padding-left: 28px; }
+    .fact { margin-bottom: 26px; }
+    .fact:last-child { margin-bottom: 0; }
+    .fact dt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 6px;
+    }
+    .fact dd { font-size: 0.95rem; color: var(--text); }
+    .fact dd a { border-bottom: 1px solid var(--line); transition: border-color 0.25s, color 0.25s; }
+    .fact dd a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    @media (max-width: 780px) {
+      .about-grid { grid-template-columns: 1fr; gap: 42px; }
+      .facts { border-left: none; border-top: 1px solid var(--line); padding-left: 0; padding-top: 30px; }
+    }
+
+    /* ── PROJECTS ────────────────────────────────────── */
+    .projects { display: grid; gap: 22px; grid-template-columns: repeat(2, 1fr); }
+    .projects .project:first-child { grid-column: 1 / -1; }
+
+    .project {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+    .project:hover { border-color: #3a4048; transform: translateY(-3px); }
+    .project.is-link:hover .project-title { color: var(--accent-2); }
+
+    .project-media {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #16181c;
+    }
+
+    /* featured card runs side-by-side on wide screens */
+    @media (min-width: 781px) {
+      .projects .project:first-child {
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        align-items: stretch;
+        min-height: 380px;
+      }
+      /* image is layered in so it can't drive the row height */
+      .projects .project:first-child .project-media { aspect-ratio: auto; height: auto; }
+      .projects .project:first-child .project-media img { position: absolute; inset: 0; }
+      .projects .project:first-child .project-body { padding: 38px 40px 40px; justify-content: center; }
+      .projects .project:first-child .project-title { font-size: 2.2rem; }
+      .projects .project:first-child .project-foot { margin-top: 8px; }
+    }
+    .project-media img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.85);
+      transition: transform 0.6s ease, filter 0.4s ease;
+    }
+    .project:hover .project-media img { transform: scale(1.04); filter: saturate(1); }
+
+    /* CSS-only cover for projects without a screenshot */
+    .cover-valentine {
+      width: 100%; height: 100%;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(ellipse at 25% 20%, #4a2233 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 80%, #3a1c46 0%, transparent 55%),
+        #17121a;
+      font-size: 2.6rem;
+    }
+    .cover-next {
+      width: 100%; height: 100%;
+      display: grid;
+      place-items: center;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 26px 26px;
+      color: var(--faint);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.6rem;
+    }
+
+    .project-body { padding: 24px 26px 26px; display: flex; flex-direction: column; flex: 1; }
+
+    .project-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .project-year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--faint);
+      letter-spacing: 0.1em;
+    }
+    .project-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(109,184,168,0.3);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    .project-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.85rem;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      transition: color 0.25s;
+    }
+    .project-desc { color: var(--muted); font-size: 0.92rem; margin-bottom: 20px; max-width: 60ch; }
+
+    .project-foot {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .stack { display: flex; flex-wrap: wrap; gap: 7px; }
+    .stack span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      color: var(--muted);
+      background: #191c20;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 4px 9px;
+    }
+    .project-cta {
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+    .project-cta .arrow { transition: transform 0.25s ease; display: inline-block; }
+    .project:hover .project-cta .arrow { transform: translateX(4px); }
+
+    /* whole card clickable */
+    .stretched::after { content: ''; position: absolute; inset: 0; }
+
+    .project.placeholder { border-style: dashed; }
+    .project.placeholder:hover { transform: none; border-color: var(--line); }
+
+    @media (max-width: 780px) {
+      .projects { grid-template-columns: 1fr; }
+    }
+
+    /* ── TOOLKIT ─────────────────────────────────────── */
+    .toolkit { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    .tool-group h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chips span {
+      font-size: 0.83rem;
+      color: var(--text);
+      border: 1px solid var(--line);
+      background: var(--bg-2);
+      border-radius: 8px;
+      padding: 7px 13px;
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .chips span:hover { border-color: var(--accent); color: var(--accent); }
+
+    @media (max-width: 780px) { .toolkit { grid-template-columns: 1fr; gap: 30px; } }
+
+    /* ── CONTACT ─────────────────────────────────────── */
+    #contact { text-align: center; }
+    #contact .contact-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.4rem, 7vw, 4.6rem);
+      line-height: 1.05;
+      margin: 18px 0 22px;
+    }
+    #contact .contact-title em { font-style: italic; color: var(--accent-2); }
+    #contact p { color: var(--muted); max-width: 48ch; margin: 0 auto 38px; }
+    .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 30px 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--faint);
+      font-size: 0.76rem;
+    }
+    footer a:hover { color: var(--accent); }
+
+    /* ── REVEAL ──────────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav-bg" id="navBg"></div>
+  <nav id="nav">
+    <!-- EDIT: wordmark -->
+    <a class="wordmark" href="#hero">stupeedoo<span>.</span></a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#toolkit" class="hide-sm">Toolkit</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══════════════════════════════════════════ -->
+  <header id="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-label mono">Portfolio — 2026</div>
+
+      <!-- EDIT: your name -->
+      <h1 class="hero-name">Hi, I'm<br /><em>stupeedoo</em></h1>
+
+      <!-- EDIT: your one-liner -->
+      <p class="hero-role">
+        I build things for the web — <strong>front-end developer</strong> working in
+        HTML, CSS and JavaScript, with a soft spot for pages that look like someone
+        actually made them.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#work">View my work <span aria-hidden="true">↓</span></a>
+        <!-- EDIT: your email -->
+        <a class="btn btn-ghost" href="mailto:stupeedoo@gmail.com">Get in touch</a>
+      </div>
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true">
+      <span>Scroll</span>
+      <span class="bar"></span>
+    </div>
+  </header>
+
+  <!-- ══ ABOUT ═════════════════════════════════════════ -->
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="mono">01</span>
+        <h2>About</h2>
+      </div>
+
+      <div class="about-grid reveal">
+        <div class="about-copy">
+          <!-- EDIT: replace these two paragraphs with your own story -->
+          <p>
+            I'm a self-taught developer who likes the part of the job where design and
+            code meet. Most of what I build starts as a single HTML file and grows from
+            there — <strong>no framework until the project earns one</strong>.
+          </p>
+          <p>
+            I care about typography, motion that has a reason to exist, and pages that
+            work on a phone as well as they do on a laptop. Lately I've been building
+            small, self-contained sites: an art gallery, an interactive card, and this
+            portfolio.
+          </p>
+          <p>
+            Currently open to <strong>freelance work, internships, and collaborations</strong>.
+            If you've got something you'd like built, I'd like to hear about it.
+          </p>
+        </div>
+
+        <dl class="facts">
+          <div class="fact">
+            <dt>Focus</dt>
+            <dd>Front-end &amp; web design</dd>
+          </div>
+          <div class="fact">
+            <dt>Based in</dt>
+            <!-- EDIT: your location -->
+            <dd>—</dd>
+          </div>
+          <div class="fact">
+            <dt>Currently</dt>
+            <dd>Building small sites &amp; learning in public</dd>
+          </div>
+          <div class="fact">
+            <dt>Code</dt>
+            <!-- EDIT: your GitHub -->
+            <dd><a href="https://github.com/stupeedoo-pixel" target="_blank" rel="noopener">github.com/stupeedoo-pixel</a></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ WORK ══════════════════════════════════════════ -->
+  <section id="work">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="mono">02</span>
+        <h2>Selected work</h2>
+      </div>
+
+      <div class="projects">
+
+        <!-- EDIT: project 1 -->
+        <article class="project is-link reveal">
+          <div class="project-media">
+            <img src="../img-color.jpeg" alt="Hibiscus flower photograph from the 7 Elements of Art gallery" loading="lazy" />
+          </div>
+          <div class="project-body">
+            <div class="project-meta">
+              <span class="project-year">2026</span>
+              <span class="project-tag">Scroll site</span>
+            </div>
+            <h3 class="project-title">7 Elements of Art</h3>
+            <p class="project-desc">
+              A full-screen scrolling gallery: seven sections, each pairing an original
+              photograph with the element it illustrates. Every section carries its own
+              palette pulled from its image, with scroll-spy navigation down the side.
+            </p>
+            <div class="project-foot">
+              <div class="stack"><span>HTML</span><span>CSS</span><span>IntersectionObserver</span></div>
+              <a class="project-cta stretched" href="../elements.html">
+                View project <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- EDIT: project 2 -->
+        <article class="project is-link reveal">
+          <div class="project-media">
+            <div class="cover-valentine" aria-hidden="true">🎀</div>
+          </div>
+          <div class="project-body">
+            <div class="project-meta">
+              <span class="project-year">2026</span>
+              <span class="project-tag">Interactive</span>
+            </div>
+            <h3 class="project-title">Valentine's card</h3>
+            <p class="project-desc">
+              A one-page interactive card with a coquette-leaning design — hand-drawn SVG
+              lace, floating decorations, and a "no" button that refuses to be clicked.
+            </p>
+            <div class="project-foot">
+              <div class="stack"><span>HTML</span><span>CSS</span><span>JS</span></div>
+              <a class="project-cta stretched" href="../index.html">
+                View project <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- EDIT: swap this placeholder out when your next project is ready -->
+        <article class="project placeholder reveal">
+          <div class="project-media">
+            <div class="cover-next" aria-hidden="true">&lt;/&gt;</div>
+          </div>
+          <div class="project-body">
+            <div class="project-meta">
+              <span class="project-year">Next</span>
+            </div>
+            <h3 class="project-title">Something new</h3>
+            <p class="project-desc">
+              Space held for the next build. Copy one of the cards above, swap the title,
+              description and link, and it drops straight into the grid.
+            </p>
+            <div class="project-foot">
+              <div class="stack"><span>TBD</span></div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TOOLKIT ═══════════════════════════════════════ -->
+  <section id="toolkit">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="mono">03</span>
+        <h2>Toolkit</h2>
+      </div>
+
+      <!-- EDIT: keep what you use, delete the rest -->
+      <div class="toolkit reveal">
+        <div class="tool-group">
+          <h3>Languages</h3>
+          <div class="chips">
+            <span>HTML</span><span>CSS</span><span>JavaScript</span>
+          </div>
+        </div>
+        <div class="tool-group">
+          <h3>Craft</h3>
+          <div class="chips">
+            <span>Responsive layout</span><span>Flexbox &amp; Grid</span>
+            <span>Animation</span><span>Accessibility</span><span>Typography</span>
+          </div>
+        </div>
+        <div class="tool-group">
+          <h3>Tools</h3>
+          <div class="chips">
+            <span>Git</span><span>GitHub Pages</span><span>VS Code</span><span>Figma</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CONTACT ═══════════════════════════════════════ -->
+  <section id="contact">
+    <div class="wrap">
+      <span class="mono">04 — Contact</span>
+      <h2 class="contact-title">Let's build<br /><em>something</em></h2>
+      <p>
+        Got a project, a role, or just want to say hi? My inbox is open — I read
+        everything and reply to most of it.
+      </p>
+      <div class="contact-links">
+        <!-- EDIT: your links -->
+        <a class="btn btn-primary" href="mailto:stupeedoo@gmail.com">stupeedoo@gmail.com</a>
+        <a class="btn btn-ghost" href="https://github.com/stupeedoo-pixel" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <footer>
+      <!-- EDIT: your name -->
+      <span>© <span id="year">2026</span> stupeedoo</span>
+      <span>Built by hand with HTML &amp; CSS</span>
+    </footer>
+  </div>
+
+  <script>
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // nav background on scroll
+    const nav = document.getElementById('nav');
+    const navBg = document.getElementById('navBg');
+    const onScroll = () => {
+      const past = window.scrollY > 40;
+      nav.classList.toggle('scrolled', past);
+      navBg.classList.toggle('scrolled', past);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
