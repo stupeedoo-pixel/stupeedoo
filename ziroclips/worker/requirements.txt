@@ -1,0 +1,14 @@
+# Core worker deps
+fastapi>=0.115
+uvicorn[standard]>=0.30
+psycopg[binary]>=3.2
+psycopg-pool>=3.2
+pydantic>=2.8
+pydantic-settings>=2.4
+numpy>=1.26
+opencv-python-headless>=4.10
+pillow>=10.4
+boto3>=1.35
+anthropic>=0.70
+openai>=1.50
+yt-dlp>=2024.10.0

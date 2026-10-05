@@ -1,0 +1,83 @@
+{
+  "$comment": "Single source of truth for caption templates. Read by the web editor (live HTML preview) AND the Python worker (ASS subtitle burn-in) so preview == export. Sizes are fractions of the output frame HEIGHT so they scale to any resolution/aspect ratio.",
+  "templates": {
+    "bold-modern": {
+      "label": "Bold Modern",
+      "fontFamily": "Montserrat",
+      "fontWeight": 900,
+      "fontSizePct": 0.052,
+      "textColor": "#FFFFFF",
+      "highlightColor": "#A3E635",
+      "strokeColor": "#000000",
+      "strokePct": 0.0045,
+      "shadow": true,
+      "uppercase": true,
+      "positionYPct": 0.70,
+      "animation": "pop",
+      "wordsPerLine": 3,
+      "emoji": false,
+      "background": null
+    },
+    "clean-minimal": {
+      "label": "Clean Minimal",
+      "fontFamily": "Inter",
+      "fontWeight": 600,
+      "fontSizePct": 0.040,
+      "textColor": "#FFFFFF",
+      "highlightColor": "#FFFFFF",
+      "strokeColor": "#000000",
+      "strokePct": 0.0015,
+      "shadow": true,
+      "uppercase": false,
+      "positionYPct": 0.80,
+      "animation": "none",
+      "wordsPerLine": 5,
+      "emoji": false,
+      "background": null
+    },
+    "high-contrast": {
+      "label": "High Contrast",
+      "fontFamily": "Montserrat",
+      "fontWeight": 800,
+      "fontSizePct": 0.048,
+      "textColor": "#FFFFFF",
+      "highlightColor": "#FACC15",
+      "strokeColor": "#000000",
+      "strokePct": 0.003,
+      "shadow": false,
+      "uppercase": true,
+      "positionYPct": 0.72,
+      "animation": "highlight",
+      "wordsPerLine": 3,
+      "emoji": false,
+      "background": "#000000CC"
+    },
+    "emoji-pop": {
+      "label": "Emoji Pop",
+      "fontFamily": "Montserrat",
+      "fontWeight": 900,
+      "fontSizePct": 0.050,
+      "textColor": "#FFFFFF",
+      "highlightColor": "#F472B6",
+      "strokeColor": "#000000",
+      "strokePct": 0.0045,
+      "shadow": true,
+      "uppercase": true,
+      "positionYPct": 0.68,
+      "animation": "pop",
+      "wordsPerLine": 2,
+      "emoji": true,
+      "background": null
+    }
+  },
+  "emojiKeywords": {
+    "money": "💰", "cash": "💰", "rich": "🤑", "dollars": "💵", "fire": "🔥", "hot": "🔥",
+    "love": "❤️", "heart": "❤️", "laugh": "😂", "funny": "😂", "crazy": "🤯", "mind": "🤯",
+    "secret": "🤫", "think": "🤔", "idea": "💡", "brain": "🧠", "win": "🏆", "winning": "🏆",
+    "time": "⏰", "fast": "⚡", "quick": "⚡", "growth": "📈", "grow": "📈", "money's": "💰",
+    "rocket": "🚀", "launch": "🚀", "huge": "🚀", "warning": "⚠️", "mistake": "❌", "wrong": "❌",
+    "right": "✅", "yes": "✅", "no": "🚫", "eyes": "👀", "look": "👀", "world": "🌍",
+    "food": "🍔", "work": "💼", "business": "💼", "phone": "📱", "music": "🎵", "goal": "🎯",
+    "strong": "💪", "gym": "💪", "sad": "😢", "happy": "😄", "scared": "😱", "shocked": "😱"
+  }
+}

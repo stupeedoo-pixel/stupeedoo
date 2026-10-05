@@ -1,0 +1,48 @@
+# One-command local stack:  cp .env.example .env  (fill in API keys)  &&  docker compose up --build
+# App: http://localhost:3000   Worker health: http://localhost:8000/health
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ziroclips
+    volumes: [pgdata:/var/lib/postgresql/data]
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 10
+
+  redis: # optional: shared rate limiting when you run >1 web instance
+    image: redis:7-alpine
+    profiles: ["redis"]
+    ports: ["6379:6379"]
+
+  web:
+    build: { context: ., dockerfile: web/Dockerfile }
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ziroclips
+      STORAGE_LOCAL_DIR: /data/storage
+      AUTH_TRUST_HOST: "true"
+    volumes: [storage:/data/storage]
+    ports: ["3000:3000"]
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  worker:
+    build: { context: ., dockerfile: worker/Dockerfile }
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ziroclips
+      STORAGE_LOCAL_DIR: /data/storage
+    volumes: [storage:/data/storage]
+    ports: ["8000:8000"]
+    depends_on:
+      web: { condition: service_started } # web applies migrations on boot
+    # Scale horizontally: docker compose up --scale worker=3
+
+volumes:
+  pgdata:
+  storage:

@@ -1,0 +1,334 @@
+// ZiroClips database schema.
+//
+// Prisma owns the schema; the Python worker reads/writes the same tables with
+// plain SQL (psycopg). If you rename a column here, grep `worker/` for it.
+// Table names are mapped to snake_case so they're pleasant to query by hand.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Auth (Auth.js / NextAuth v5 Prisma adapter models + our own fields)
+// ---------------------------------------------------------------------------
+
+enum Role {
+  USER
+  ADMIN
+}
+
+/// Billing plan. Limits live in web/src/lib/plans.ts (and worker/ziro_worker/plans.py).
+enum Plan {
+  FREE
+  PRO
+  UNLIMITED // personal / owner mode
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  passwordHash  String?   @map("password_hash")
+  role          Role      @default(USER)
+  plan          Plan      @default(FREE)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  accounts    Account[]
+  sessions    Session[]
+  projects    Project[]
+  jobs        Job[]
+  exports     Export[]
+  usageEvents UsageEvent[]
+  brandKit    BrandKit?
+
+  // ROADMAP (Phase 2 – team workspaces): users will belong to Workspaces via a
+  // Membership table; Projects/BrandKits move from userId to workspaceId.
+
+  @@map("users")
+}
+
+model Account {
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ---------------------------------------------------------------------------
+// Core domain
+// ---------------------------------------------------------------------------
+
+enum SourceType {
+  UPLOAD
+  YOUTUBE
+}
+
+enum ProjectStatus {
+  UPLOADING  // waiting for the browser to finish the chunked upload
+  QUEUED     // processing job enqueued
+  PROCESSING // worker is running the pipeline
+  READY      // clips generated
+  FAILED
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  userId      String        @map("user_id")
+  title       String
+  sourceType  SourceType    @map("source_type")
+  sourceUrl   String?       @map("source_url") // YouTube URL
+  /// Storage key of the original media (set after upload/download).
+  sourceKey   String?       @map("source_key")
+  /// Low-res H.264 proxy of the full source; the editor plays this and
+  /// reframes/captions it client-side, so edits preview instantly.
+  proxyKey    String?       @map("proxy_key")
+  /// S3 multipart upload id (only while status=UPLOADING with the s3 driver).
+  uploadId    String?       @map("upload_id")
+  fileSize    BigInt?       @map("file_size")
+  durationSec Float?        @map("duration_sec")
+  width       Int?
+  height      Int?
+  fps         Float?
+  language    String?
+  status      ProjectStatus @default(UPLOADING)
+  /// 0..100 overall pipeline progress + human readable stage, for polling.
+  progress    Int           @default(0)
+  stage       String?
+  error       String?
+  /// User preferences for this run (e.g. target clip count/length).
+  settings    Json          @default("{}")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transcript Transcript?
+  clips      Clip[]
+  jobs       Job[]
+
+  @@index([userId, createdAt])
+  @@map("projects")
+}
+
+model Transcript {
+  id        String   @id @default(cuid())
+  projectId String   @unique @map("project_id")
+  provider  String
+  language  String?
+  /// Word-level timings: [{ w: string, s: number, e: number }] in source seconds.
+  words     Json
+  /// Sentence-ish segments: [{ text, s, e }]
+  segments  Json
+  text      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("transcripts")
+}
+
+model Clip {
+  id             String   @id @default(cuid())
+  projectId      String   @map("project_id")
+  /// Display order in the gallery/editor (user reorderable).
+  position       Int
+  title          String
+  hook           String?
+  reasoning      String?
+  hashtags       String[] @default([])
+  /// Source-time range (seconds) of the clip.
+  startSec       Float    @map("start_sec")
+  endSec         Float    @map("end_sec")
+  viralityScore  Int      @map("virality_score")
+  /// { hook, emotion, pacing, completeness, engagement, signals: {...} }
+  scoreBreakdown Json     @map("score_breakdown")
+  /// Editable caption words for this clip: [{ w, s, e }] in SOURCE seconds.
+  words          Json
+  /// Face-tracking keyframes: [{ t, x, y }] — t in source seconds, x/y normalized
+  /// subject centre (0..1). Used for both CSS preview and FFmpeg export crop.
+  cropTrack      Json     @map("crop_track")
+  /// Caption style (template id + overrides). See shared/caption-templates.json.
+  captionStyle   Json     @map("caption_style")
+  /// Text / emoji / B-roll placeholder overlays: [{ id, type, text, x, y, start, end, ... }]
+  overlays       Json     @default("[]")
+  aspectRatio    String   @default("9:16") @map("aspect_ratio")
+  thumbnailKey   String?  @map("thumbnail_key")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  project Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  exports Export[]
+  jobs    Job[]
+
+  @@index([projectId, position])
+  @@map("clips")
+}
+
+enum ExportStatus {
+  QUEUED
+  RENDERING
+  DONE
+  FAILED
+}
+
+model Export {
+  id         String       @id @default(cuid())
+  clipId     String       @map("clip_id")
+  userId     String       @map("user_id")
+  resolution String // "1080p" | "4k"
+  status     ExportStatus @default(QUEUED)
+  outputKey  String?      @map("output_key")
+  sizeBytes  BigInt?      @map("size_bytes")
+  error      String?
+  /// Snapshot of clip edits at export time (so later edits don't mutate history).
+  snapshot   Json
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+
+  clip Clip @relation(fields: [clipId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // ROADMAP (Phase 2 – direct social posting): a Publication model
+  // (exportId, platform, externalId, status, scheduledAt) fed by OAuth'd
+  // TikTok / YouTube Shorts / Instagram Reels connections.
+
+  @@index([clipId, createdAt])
+  @@map("exports")
+}
+
+// ---------------------------------------------------------------------------
+// Job queue
+//
+// Postgres-backed queue (SELECT ... FOR UPDATE SKIP LOCKED). One fewer moving
+// part than Redis/BullMQ, transactional with the rows it touches, and trivially
+// shared between the Node API (producer) and Python worker (consumer).
+// ---------------------------------------------------------------------------
+
+enum JobType {
+  PROCESS_PROJECT
+  FIND_MORE_CLIPS
+  REGENERATE_CAPTIONS
+  EXPORT_CLIP
+}
+
+enum JobStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+model Job {
+  id          String    @id @default(cuid())
+  type        JobType
+  status      JobStatus @default(QUEUED)
+  userId      String    @map("user_id")
+  projectId   String?   @map("project_id")
+  clipId      String?   @map("clip_id")
+  payload     Json      @default("{}")
+  result      Json?
+  progress    Int       @default(0)
+  stage       String?
+  error       String?
+  attempts    Int       @default(0)
+  maxAttempts Int       @default(2) @map("max_attempts")
+  /// Higher runs first (paid tiers can get priority later).
+  priority    Int       @default(0)
+  runAfter    DateTime  @default(now()) @map("run_after")
+  lockedBy    String?   @map("locked_by")
+  heartbeatAt DateTime? @map("heartbeat_at")
+  startedAt   DateTime? @map("started_at")
+  finishedAt  DateTime? @map("finished_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  clip    Clip?    @relation(fields: [clipId], references: [id], onDelete: Cascade)
+
+  @@index([status, priority, runAfter])
+  @@index([projectId])
+  @@map("jobs")
+}
+
+// ---------------------------------------------------------------------------
+// Brand kit & usage metering
+// ---------------------------------------------------------------------------
+
+model BrandKit {
+  id             String  @id @default(cuid())
+  userId         String  @unique @map("user_id")
+  logoKey        String? @map("logo_key")
+  /// "top-left" | "top-right" | "bottom-left" | "bottom-right"
+  logoPosition   String  @default("top-right") @map("logo_position")
+  logoScalePct   Float   @default(0.14) @map("logo_scale_pct")
+  primaryColor   String  @default("#A3E635") @map("primary_color")
+  secondaryColor String  @default("#FFFFFF") @map("secondary_color")
+  fontFamily     String  @default("Montserrat") @map("font_family")
+  /// Default caption style applied to newly generated clips.
+  captionStyle   Json?   @map("caption_style")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("brand_kits")
+}
+
+enum UsageKind {
+  MINUTES_PROCESSED
+  CLIPS_GENERATED
+  EXPORTS
+  VIDEOS_PROCESSED
+}
+
+/// Append-only usage ledger. Monthly totals = SUM(amount) WHERE created_at >= month start.
+/// Append-only makes it easy to later sync to Stripe metered billing.
+model UsageEvent {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  kind      UsageKind
+  amount    Float
+  projectId String?   @map("project_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, kind, createdAt])
+  @@map("usage_events")
+}
